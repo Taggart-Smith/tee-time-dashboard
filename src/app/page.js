@@ -205,7 +205,6 @@ export default function Home() {
             ))}
           </tbody>
         </table>
-        <h1 className="text-center text-xs mt-4">This is all a test to see if prod works!</h1>
       </div>
     </main>
   );
