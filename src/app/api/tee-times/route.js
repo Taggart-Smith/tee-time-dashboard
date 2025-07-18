@@ -4,18 +4,22 @@ const MONGO_URI = process.env.MONGO_URI;
 const DB_NAME = process.env.DB_NAME;
 const COLLECTION_NAME = process.env.COLLECTION_NAME;
 
+export const runtime = 'nodejs';
+
 export async function GET(request) {
-  const client = new MongoClient(MONGO_URI);
+  const client = new MongoClient(MONGO_URI, {
+    tls: true,
+  });
+
   const { searchParams } = new URL(request.url);
-  const dateParam = searchParams.get("date"); // optional
-  const courseParam = searchParams.get("course"); // optional
+  const dateParam = searchParams.get("date");
+  const courseParam = searchParams.get("course");
 
   try {
     await client.connect();
     const db = client.db(DB_NAME);
     const collection = db.collection(COLLECTION_NAME);
 
-    // Build query filter
     const filter = {};
     if (courseParam && courseParam !== "All" && courseParam !== "All Courses") {
       filter.course = courseParam;
@@ -28,16 +32,7 @@ export async function GET(request) {
       filter.dateISO = { $gte: dateObj, $lt: nextDay };
     }
 
-    // Query the collection
     const teeTimes = await collection.find(filter).sort({ dateISO: 1, time: 1 }).toArray();
-
-    // Group tee times by course and date for neat display (API returns JSON)
-    const grouped = {};
-    teeTimes.forEach(tt => {
-      const key = `${tt.course} | ${tt.date}`;
-      if (!grouped[key]) grouped[key] = [];
-      grouped[key].push(tt);
-    });
 
     return new Response(JSON.stringify(teeTimes), {
       status: 200,
@@ -46,7 +41,7 @@ export async function GET(request) {
   } catch (err) {
     console.error("API Error:", err);
     return new Response(
-      JSON.stringify({ error: "Failed to fetch tee times" }),
+      JSON.stringify({ error: "Failed to fetch tee times", details: err.message }),
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
