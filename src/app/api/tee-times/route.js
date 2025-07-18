@@ -4,9 +4,11 @@ const MONGO_URI = process.env.MONGO_URI;
 const DB_NAME = process.env.DB_NAME;
 const COLLECTION_NAME = process.env.COLLECTION_NAME;
 
+// ✅ Force Node runtime (not Edge)
 export const runtime = 'nodejs';
 
 export async function GET(request) {
+  // ✅ EXPLICIT TLS
   const client = new MongoClient(MONGO_URI, {
     tls: true,
   });
@@ -40,8 +42,12 @@ export async function GET(request) {
     });
   } catch (err) {
     console.error("API Error:", err);
+
     return new Response(
-      JSON.stringify({ error: "Failed to fetch tee times", details: err.message }),
+      JSON.stringify({
+        error: "Failed to fetch tee times",
+        message: err.message,
+      }),
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
