@@ -97,23 +97,23 @@ export default function Home() {
   );
 
   return (
-    <main className="p-4 max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-center">Tee Sheet</h1>
+    <main className="p-2 sm:p-4 max-w-6xl mx-auto">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Tee Sheet</h1>
 
-      <div className="flex flex-wrap gap-2 mb-4 items-center">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-2 mb-4 items-center">
         <input
           type="date"
           value={formatDate(selectedDate)}
           onChange={(e) => setSelectedDate(new Date(e.target.value))}
-          className="px-4 py-2 border rounded-md shadow-sm text-lg"
+          className="w-full sm:w-auto px-4 py-2 border rounded-md shadow-sm text-base sm:text-lg"
         />
-        <div className="flex-1 min-w-[220px] relative">
+        <div className="flex-1 min-w-[180px] sm:min-w-[220px] relative w-full">
           <input
             type="text"
             placeholder="Search courses..."
             value={courseSearch}
             onChange={(e) => setCourseSearch(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md shadow-sm text-lg"
+            className="w-full px-4 py-2 border rounded-md shadow-sm text-base sm:text-lg"
             autoComplete="off"
           />
           {courseSearch && filteredCourses.filter(c => !selectedCourse.includes(c)).length > 0 && (
@@ -135,15 +135,8 @@ export default function Home() {
             </div>
           )}
         </div>
-        {/* <button
-          className="ml-2 px-2 py-1 border rounded text-xs"
-          onClick={() => setSelectedCourse(allCourses)}
-          type="button"
-        >
-          All
-        </button> */}
         <button
-          className="ml-1 px-2 py-1 border rounded text-xs"
+          className="px-2 py-1 border rounded text-xs"
           onClick={() => setSelectedCourse([])}
           type="button"
         >
@@ -152,11 +145,11 @@ export default function Home() {
       </div>
 
       {/* Selected courses as tags */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
         {selectedCourse.map((course, idx) => (
           <span
             key={idx}
-            className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center"
+            className="bg-blue-100 text-blue-800 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm flex items-center"
           >
             {course}
             <button
@@ -174,12 +167,12 @@ export default function Home() {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full border">
+        <table className="min-w-full border text-xs sm:text-base">
           <thead>
             <tr>
-              <th className="border px-2 py-1 bg-gray-50">Time</th>
+              <th className="border px-2 py-1 bg-gray-50 sticky left-0 bg-white z-10">Time</th>
               {allCourses.map((course) => (
-                <th key={course} className="border px-2 py-1 bg-gray-50">
+                <th key={course} className="border px-2 py-1 bg-gray-50 whitespace-nowrap">
                   {course}
                 </th>
               ))}
@@ -188,11 +181,11 @@ export default function Home() {
           <tbody>
             {timeSlots.map((time, index) => (
               <tr key={index}>
-                <td className="border px-2 py-1 font-semibold text-gray-700 text-center">
+                <td className="border px-2 py-1 font-semibold text-gray-700 text-center sticky left-0 bg-white z-10">
                   {time}
                 </td>
                 {allCourses.map((course) => (
-                  <td key={course} className="border px-2 py-1">
+                  <td key={course} className="border px-2 py-1 min-w-[120px] align-top">
                     {(teeTimesByTime[time]?.[course] || []).map((tt, i) => (
                       <div
                         key={i}
@@ -200,7 +193,7 @@ export default function Home() {
                         onClick={() => alert(`Booked ${tt.course} at ${time}`)}
                       >
                         <div className="text-blue-700 font-bold">{tt.course}</div>
-                        <div className="text-sm text-gray-600">
+                        <div className="text-xs sm:text-sm text-gray-600">
                           ${tt.price != null ? tt.price.toFixed(2) : "N/A"} • Players:{" "}
                           {tt.minPlayers} - {tt.maxPlayers}
                         </div>
@@ -212,7 +205,7 @@ export default function Home() {
             ))}
           </tbody>
         </table>
-        <h1>This is all a test to see if prod works!</h1>
+        <h1 className="text-center text-xs mt-4">This is all a test to see if prod works!</h1>
       </div>
     </main>
   );
