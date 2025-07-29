@@ -170,7 +170,7 @@ export default function Home() {
         <table className="min-w-full border text-xs sm:text-base">
           <thead>
             <tr>
-              <th className="border px-2 py-1 bg-gray-50 sticky left-0 bg-white z-10">Time</th>
+              <th className="border px-2 py-1 bg-gray-50 sticky left-0 z-10">Time</th>
               {allCourses.map((course) => (
                 <th key={course} className="border px-2 py-1 bg-gray-50 whitespace-nowrap">
                   {course}
