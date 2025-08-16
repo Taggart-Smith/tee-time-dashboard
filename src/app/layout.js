@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Tee Sheet",
+  title: "Tee Sheet Dash",
   description: "A simple tee time management app",
 };
 
